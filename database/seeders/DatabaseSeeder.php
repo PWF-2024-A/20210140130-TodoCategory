@@ -18,46 +18,29 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
-
-        // Query Builder
-        // User::create([
-        //     'name' => 'Admin',
-        //     'email' => 'admin@admin.com',
-        //     'email_verified_at' => now(),
-        //     'password' => Hash::make('password'),
-        //     'remember_token' => Str::random(10),
-        //     'is_admin' => true,
-        // ]);
-
-        // User Factory
-        User::factory()->create([
-            'name' => 'Admin',
-            'email' => 'admin@admin.com',
-            'is_admin' => true,
-        ]);
-        User::factory()->create([
-            'name' => 'Furji',
-            'email' => 'furjimadi@gmail.com',
-            'is_admin' => false,
-        ]);
-
-        // Factory
+        User::create(
+            [
+                'name' => 'Admin',
+                'email' => 'admin@admin.com',
+                'email_verified_at' => now(),
+                'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+                'remember_token' => Str::random(10),
+                'is_admin' => true
+            ]
+        );
+        User::create(
+            [
+                'name' => 'Arif Budiman Arrosyid',
+                'email' => 'arifbudimanarrosyid@gmail.com',
+                'email_verified_at' => now(),
+                'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+                'remember_token' => Str::random(10),
+                'is_admin' => false
+            ]
+        );
         User::factory(100)->create();
-        Category::factory(100)->create();
+        Category::factory(500)->create();
         Todo::factory(500)->create();
 
-        // Factory with Relationship
-        // User::all()->each(function (User $user) {
-        //     $user->todos()->saveMany(Todo::factory(10)->make());
-        // });
-        // User::factory(100)->create()->each(function (User $user) {
-        //     $user->todos()->saveMany(Todo::factory(10)->make());
-        // });
     }
 }

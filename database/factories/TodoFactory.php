@@ -1,111 +1,30 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace Database\Factories;
 
-use App\Http\Controllers\Controller;
-use App\Models\Todo;
-use Illuminate\Http\Request;
+use App\Models\User;
+use App\Models\Category;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-class TodoController extends Controller
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Todo>
+ */
+class TodoFactory extends Factory
 {
     /**
-     * Display a listing of the resource.
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
      */
-    public function index()
+    public function definition(): array
     {
-        $search = request('search');
-
-        if ($search) {
-            $todos = Todo::with('category')
-                ->where('user_id', auth()->user()->id)
-                ->where(function ($query) use ($search) {
-                    $query->where('title', 'like', '%' . $search . '%');
-                })
-                ->latest()
-                ->get();
-
-            return response()->json([
-                'status' => 'success',
-                'data' => [
-                    'todos' => $todos,
-                ]
-            ], 200);
-        }
-
-        $todos = Todo::with('category')
-            ->where('user_id', auth()->user()->id)
-            ->latest()
-            ->get();
-
-        return response()->json([
-            'status' => 'success',
-            'data' => [
-                'todos' => $todos,
-            ]
-        ], 200);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Todo $todo)
-    {
-        $todo = Todo::with('category')
-            ->where('id', $todo->id)
-            ->first();
-
-        if ($todo->user_id != auth()->user()->id) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Forbidden'
-            ], 403);
-        }
-
-        return response()->json([
-            'status' => 'success',
-            'data' => [
-                'todo' => $todo,
-            ]
-        ], 200);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Todo $todo)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Todo $todo)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Todo $todo)
-    {
-        //
+        return [
+            // 'user_id' => rand(1, 100),
+            'user_id' => User::inRandomOrder()->first()->id,
+            //'category_id' => rand(1, 100),
+            'category_id' => Category::inRandomOrder()->first()->id,
+            'title' => ucwords(fake()->sentence()),
+            'is_complete' => rand(0, 1)
+        ];
     }
 }
